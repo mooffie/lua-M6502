@@ -1,0 +1,345 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>M6502 Reference</title>
+    <link rel="stylesheet" href="../ldoc_pale.css" type="text/css" />
+    <link rel="stylesheet" href="../mc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>M6502</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../modules/M6502.html">M6502</a></li>
+  <li><strong>M6502.utils</strong></li>
+</ul>
+<h2>Guide</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../guide/README.md.html">README</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../examples/ex1.lua.html">ex1.lua</a></li>
+  <li><a href="../examples/ex2.lua.html">ex2.lua</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>M6502.utils</code></h1>
+<p>A few utility functions.</p>
+<p>
+
+</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#read_file">read_file(path)</a></td>
+	<td class="summary">Reads the whole contents of a file.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#write_file">write_file(path, s)</a></td>
+	<td class="summary">Writes a file.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#parse_hex">parse_hex(s)</a></td>
+	<td class="summary">Parses a hex string.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#read_hex_file">read_hex_file(path)</a></td>
+	<td class="summary">Reads the whole contents of a file, and parse it as hex.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#dis_range">dis_range(mpu, addr, len)</a></td>
+	<td class="summary">Disassembles a memory range.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#dump_range">dump_range(mpu, addr, len)</a></td>
+	<td class="summary">Dumps a memory range.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "read_file"></a>
+    <strong>read_file(path)</strong>
+    </dt>
+    <dd>
+    Reads the whole contents of a file. </p>
+
+<p> Example:</p>
+
+
+<pre>
+<span class="comment">-- Load a program from disk.
+</span>mpu:pokes(<span class="number">0x600</span>, utils.read_file(<span class="string">'program.bin'</span>))
+</pre>
+
+<p> Raises an exception in case of error.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter without-description ">path</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "write_file"></a>
+    <strong>write_file(path, s)</strong>
+    </dt>
+    <dd>
+    Writes a file. </p>
+
+<p> Example:</p>
+
+
+<pre>
+<span class="comment">-- Dump the whole memory image to a file.
+</span>utils.write_file(<span class="string">'image.bin'</span>, mpu:peeks(<span class="number">0</span>, <span class="number">0x10000</span>))
+</pre>
+
+<p> Raises an exception in case of error.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter without-description ">path</span>
+
+
+
+        </li>
+        <li><span class="parameter">s</span>
+         String. The contents of the file.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "parse_hex"></a>
+    <strong>parse_hex(s)</strong>
+    </dt>
+    <dd>
+    Parses a hex string.  E.g., turns "A0 FE 03" into the three bytes "\160\254\003".</p>
+
+<p> The string may contain comments: anything from ";" till end of lines.</p>
+
+<p> Example:</p>
+
+
+<pre>
+<span class="keyword">local</span> mpu = <span class="global">require</span>(<span class="string">'M6502'</span>).new()
+<span class="keyword">local</span> utils = <span class="global">require</span>(<span class="string">'M6502.utils'</span>)
+
+<span class="keyword">local</span> program = utils.parse_hex <span class="string">[[
+  a9 01   ; LDA #1
+  a2 02   ; LDX #2
+  a0 03   ; LDY #3
+]]</span>
+
+mpu:pokes(<span class="number">0x600</span>, program)
+mpu:pc(<span class="number">0x600</span>)
+mpu:run()
+</pre>
+
+<p> If the function detects an error in the input (e.g., invalid hex numerals,
+ odd lengths of hex runs), an exception will be raised.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter without-description ">s</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "read_hex_file"></a>
+    <strong>read_hex_file(path)</strong>
+    </dt>
+    <dd>
+
+<p>Reads the whole contents of a file, and parse it as hex. </p>
+
+<p> This is equivalent to doing <code>parse_hex(read_file(path))</code>.</p>
+
+<p> Example:</p>
+
+
+<pre>
+<span class="comment">-- Load a program from disk.
+</span>mpu:pokes(<span class="number">0x600</span>, utils.read_hex_file(<span class="string">'program.hex'</span>))
+</pre>
+
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter without-description ">path</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "dis_range"></a>
+    <strong>dis_range(mpu, addr, len)</strong>
+    </dt>
+    <dd>
+
+<p>Disassembles a memory range. </p>
+
+<p> Example:</p>
+
+
+<pre>
+<span class="global">print</span>( mpu:dis(<span class="number">0x600</span>, <span class="number">10</span>) )
+</pre>
+
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter without-description ">mpu</span>
+
+
+
+        </li>
+        <li><span class="parameter">addr</span>
+         The starting address.
+        </li>
+        <li><span class="parameter">len</span>
+         How many bytes to disassemble.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A string containing the disassembled code.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "dump_range"></a>
+    <strong>dump_range(mpu, addr, len)</strong>
+    </dt>
+    <dd>
+
+<p>Dumps a memory range. </p>
+
+<p> Example:</p>
+
+
+<pre>
+<span class="global">print</span>( mpu:dump_range(<span class="number">0x200</span>, <span class="number">1024</span>) )
+</pre>
+
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter without-description ">mpu</span>
+
+
+
+        </li>
+        <li><span class="parameter">addr</span>
+         The starting address.
+        </li>
+        <li><span class="parameter">len</span>
+         How many bytes to dump.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A string containing the hex dump.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2016-08-31 15:14:08 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

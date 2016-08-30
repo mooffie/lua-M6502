@@ -1,0 +1,973 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>M6502 Reference</title>
+    <link rel="stylesheet" href="../ldoc_pale.css" type="text/css" />
+    <link rel="stylesheet" href="../mc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>M6502</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Module_level_functions">Module-level functions </a></li>
+<li><a href="#Registers">Registers </a></li>
+<li><a href="#Peeking_and_poking">Peeking and poking </a></li>
+<li><a href="#Stack_operations">Stack operations </a></li>
+<li><a href="#Callbacks">Callbacks </a></li>
+<li><a href="#Misc">Misc </a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><strong>M6502</strong></li>
+  <li><a href="../modules/M6502.utils.html">M6502.utils</a></li>
+</ul>
+<h2>Guide</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../guide/README.md.html">README</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../examples/ex1.lua.html">ex1.lua</a></li>
+  <li><a href="../examples/ex2.lua.html">ex2.lua</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>M6502</code></h1>
+<p>Emulator for the 6502 microprocessor.</p>
+<p>
+
+</p>
+
+
+<h2><a href="#Module_level_functions">Module-level functions </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#new">new()</a></td>
+	<td class="summary">Returns a new MPU object.</td>
+	</tr>
+</table>
+<h2><a href="#Registers">Registers </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#mpu:A">mpu:A([value])</a></td>
+	<td class="summary">Reads/writes the A register.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#mpu:X">mpu:X([value])</a></td>
+	<td class="summary">Reads/writes the X register.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#mpu:Y">mpu:Y([value])</a></td>
+	<td class="summary">Reads/writes the Y register.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#mpu:P">mpu:P([value])</a></td>
+	<td class="summary">Reads/writes the P (flags) register.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#mpu:S">mpu:S([value])</a></td>
+	<td class="summary">Reads/writes the S (stack) register.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#mpu:PC">mpu:PC([value])</a></td>
+	<td class="summary">Reads/writes the PC (program counter) register.</td>
+	</tr>
+</table>
+<h2><a href="#Peeking_and_poking">Peeking and poking </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#mpu:peek">mpu:peek(addr[, direct])</a></td>
+	<td class="summary">Reads a byte from memory.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#mpu:poke">mpu:poke(addr, byte[, direct])</a></td>
+	<td class="summary">Writes a byte to memory.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#mpu:peekw">mpu:peekw(addr[, direct])</a></td>
+	<td class="summary">Reads a word from memory.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#mpu:pokew">mpu:pokew(addr, byte[, direct])</a></td>
+	<td class="summary">Writes a word to memory.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#mpu:peeks">mpu:peeks(addr, len[, direct])</a></td>
+	<td class="summary">Reads a string (bytes) from memory.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#mpu:pokes">mpu:pokes(addr, s[, direct])</a></td>
+	<td class="summary">Writes a string (bytes) to memory.</td>
+	</tr>
+</table>
+<h2><a href="#Stack_operations">Stack operations </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#mpu:push">mpu:push(byte)</a></td>
+	<td class="summary">Pushes a byte onto the stack.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#mpu:pop">mpu:pop()</a></td>
+	<td class="summary">Pops a byte from the stack.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#mpu:pushw">mpu:pushw(word)</a></td>
+	<td class="summary">Pushes a word onto the stack.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#mpu:popw">mpu:popw()</a></td>
+	<td class="summary">Pops a word from the stack.</td>
+	</tr>
+</table>
+<h2><a href="#Callbacks">Callbacks </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#mpu:on_read">mpu:on_read(addr, fn)</a></td>
+	<td class="summary">Installs a callback to be used when a byte is read from memory.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#mpu:on_write">mpu:on_write(addr, fn)</a></td>
+	<td class="summary">Installs a callback to be used when a byte is written to memory.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#mpu:on_call">mpu:on_call(addr, fn)</a></td>
+	<td class="summary">Installs a callback to be used when an address is called.</td>
+	</tr>
+</table>
+<h2><a href="#Misc">Misc </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#mpu:dis">mpu:dis(addr)</a></td>
+	<td class="summary">Disassembles one machine instruction.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#mpu:dump">mpu:dump()</a></td>
+	<td class="summary">Returns a string describing the MPU status.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#mpu:run">mpu:run()</a></td>
+	<td class="summary">Makes the MPU start executing instructions.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Module_level_functions"></a>Module-level functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "new"></a>
+    <strong>new()</strong>
+    </dt>
+    <dd>
+    Returns a new MPU object. </p>
+
+<p> The stack is initialized to 0xFF, and the BRK handler is set to one
+ that <a href="../modules/M6502.html#mpu:run">terminates the program</a>. All other state (memory and
+ registers) is set to zero.
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header has-description"><a name="Registers"></a>Registers </h2>
+
+          <div class="section-description">
+
+
+
+<p> The following functions lets you access the registers. They all work the
+ same: if you provide an argument, they are setters. If you don't, they are
+ getters.</p>
+
+<p> <strong>For convenience, you can spell the registers in both lower and
+ upper-case.</strong> (Well, to be frank, the only reason we allow upper-case is
+ because of a limitation of the documentation tool, <code>ldoc</code>).</p>
+
+<p> Example:</p>
+
+
+<pre>
+<span class="comment">-- Increment the A register.
+</span>mpu:a(mpu:a() + <span class="number">1</span>)
+</pre>
+
+
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "mpu:A"></a>
+    <strong>mpu:A([value])</strong>
+    </dt>
+    <dd>
+    Reads/writes the A register.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+
+
+
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mpu:X"></a>
+    <strong>mpu:X([value])</strong>
+    </dt>
+    <dd>
+    Reads/writes the X register.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+
+
+
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mpu:Y"></a>
+    <strong>mpu:Y([value])</strong>
+    </dt>
+    <dd>
+    Reads/writes the Y register.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+
+
+
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mpu:P"></a>
+    <strong>mpu:P([value])</strong>
+    </dt>
+    <dd>
+    Reads/writes the P (flags) register.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+
+
+
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mpu:S"></a>
+    <strong>mpu:S([value])</strong>
+    </dt>
+    <dd>
+    Reads/writes the S (stack) register. </p>
+
+<p> (The <a href="../modules/M6502.html#mpu:S">S</a> register, after calling <a href="../modules/M6502.html#new">new</a>, is initialized to <code>0xFF</code>. You
+ don't need to do this initialization yourself.)
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+
+
+
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mpu:PC"></a>
+    <strong>mpu:PC([value])</strong>
+    </dt>
+    <dd>
+    Reads/writes the PC (program counter) register. </p>
+
+<p> This is where the MPU starts executing instructions. You should set it
+ to the start of your program before calling <a href="../modules/M6502.html#mpu:run">run</a>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+
+
+
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header has-description"><a name="Peeking_and_poking"></a>Peeking and poking </h2>
+
+          <div class="section-description">
+           A bunch of functions to let you easily read/write data from memory.</p>
+
+<p> All the functions accept an optional boolean flag, "direct". If
+ <strong>true</strong>, <a href="../modules/M6502.html#mpu:on_read">callbacks</a> will be bypassed. You'll usually want to
+ use this flag inside write callbacks (see example at <a href="../modules/M6502.html#mpu:on_write">on_write</a>), or
+ else you'll end up with infinite recursion
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "mpu:peek"></a>
+    <strong>mpu:peek(addr[, direct])</strong>
+    </dt>
+    <dd>
+    Reads a byte from memory.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter without-description ">addr</span>
+
+
+
+        </li>
+        <li><span class="parameter">direct</span>
+         Boolean.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mpu:poke"></a>
+    <strong>mpu:poke(addr, byte[, direct])</strong>
+    </dt>
+    <dd>
+    Writes a byte to memory.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter without-description ">addr</span>
+
+
+
+        </li>
+        <li><span class="parameter without-description ">byte</span>
+
+
+
+        </li>
+        <li><span class="parameter">direct</span>
+         Boolean.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mpu:peekw"></a>
+    <strong>mpu:peekw(addr[, direct])</strong>
+    </dt>
+    <dd>
+    Reads a word from memory.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter without-description ">addr</span>
+
+
+
+        </li>
+        <li><span class="parameter">direct</span>
+         Boolean.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mpu:pokew"></a>
+    <strong>mpu:pokew(addr, byte[, direct])</strong>
+    </dt>
+    <dd>
+    Writes a word to memory.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter without-description ">addr</span>
+
+
+
+        </li>
+        <li><span class="parameter without-description ">byte</span>
+
+
+
+        </li>
+        <li><span class="parameter">direct</span>
+         Boolean.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mpu:peeks"></a>
+    <strong>mpu:peeks(addr, len[, direct])</strong>
+    </dt>
+    <dd>
+    Reads a string (bytes) from memory.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter without-description ">addr</span>
+
+
+
+        </li>
+        <li><span class="parameter">len</span>
+         How many bytes to read. (It's permissible to read more than the
+   available memory: the resulting string will be trimmed down.)
+        </li>
+        <li><span class="parameter">direct</span>
+         Boolean.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        The string (bytes) read.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mpu:pokes"></a>
+    <strong>mpu:pokes(addr, s[, direct])</strong>
+    </dt>
+    <dd>
+    Writes a string (bytes) to memory. </p>
+
+<p> This is the way to load a program into memory. Example:</p>
+
+
+<pre>
+<span class="keyword">local</span> mpu = <span class="global">require</span>(<span class="string">'M6502'</span>).new()
+
+mpu:pokes(<span class="number">0x600</span>, <span class="string">"\169\007"</span>)  <span class="comment">-- "LDA #7" (loads 7 into the A register)
+</span>mpu:pc(<span class="number">0x600</span>)
+mpu:run()
+</pre>
+
+<p> See <a href="../modules/M6502.utils.html#parse_hex">M6502.utils.parse_hex</a> for another example.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter without-description ">addr</span>
+
+
+
+        </li>
+        <li><span class="parameter">s</span>
+         The string (bytes) to write. (It's permissible for this string to
+   be longer than the available memory: the excessive bytes will be ignored.)
+        </li>
+        <li><span class="parameter">direct</span>
+         Boolean.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header has-description"><a name="Stack_operations"></a>Stack operations </h2>
+
+          <div class="section-description">
+           Pushes and pops data from the stack.</p>
+
+<p> Note that these are just convenience functions; Instead of:</p>
+
+
+<pre>
+mpu:push(<span class="number">123</span>)
+</pre>
+
+<p> You can do:</p>
+
+
+<pre>
+mpu:poke(<span class="number">0x100</span> + mpu:s(), <span class="number">123</span>)
+mpu:s(mpu:s() - <span class="number">1</span>)
+</pre>
+
+<p> If you're trying to pop form an empty stack, or push onto a full
+  stack, the 'S' register will simply wrap around.
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "mpu:push"></a>
+    <strong>mpu:push(byte)</strong>
+    </dt>
+    <dd>
+    Pushes a byte onto the stack.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter without-description ">byte</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mpu:pop"></a>
+    <strong>mpu:pop()</strong>
+    </dt>
+    <dd>
+    Pops a byte from the stack.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mpu:pushw"></a>
+    <strong>mpu:pushw(word)</strong>
+    </dt>
+    <dd>
+    Pushes a word onto the stack.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter without-description ">word</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mpu:popw"></a>
+    <strong>mpu:popw()</strong>
+    </dt>
+    <dd>
+    Pops a word from the stack.
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header has-description"><a name="Callbacks"></a>Callbacks </h2>
+
+          <div class="section-description">
+           Callback are the primary means by which you can tie Lua code into the
+ microprocessor.
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "mpu:on_read"></a>
+    <strong>mpu:on_read(addr, fn)</strong>
+    </dt>
+    <dd>
+
+<p>Installs a callback to be used when a byte is read from memory. </p>
+
+<p> Example:</p>
+
+
+<pre>
+<span class="comment">-- This makes reading the byte at address 0xfe return
+</span><span class="comment">-- a random number.
+</span>
+mpu:on_read(<span class="number">0x00fe</span>, <span class="keyword">function</span>()
+  <span class="keyword">return</span> <span class="global">math</span>.random(<span class="number">0</span>, <span class="number">255</span>)
+<span class="keyword">end</span>)
+</pre>
+
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter without-description ">addr</span>
+
+
+
+        </li>
+        <li><span class="parameter">fn</span>
+         The function to install. Or <strong>nil</strong> to clear any installed one.
+   The function gets two arguments: the <strong>mpu</strong> object, and the <strong>address</strong>
+   read from. The function should return a number (a byte).
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mpu:on_write"></a>
+    <strong>mpu:on_write(addr, fn)</strong>
+    </dt>
+    <dd>
+
+<p>Installs a callback to be used when a byte is written to memory. </p>
+
+<p> Example:</p>
+
+
+<pre>
+<span class="comment">-- This makes writing a byte to address 0xf0 print
+</span><span class="comment">-- this character on the screen.
+</span>
+mpu:on_write(<span class="number">0x00f0</span>, <span class="keyword">function</span>(mpu, addr, byte)
+  <span class="global">print</span>(<span class="global">string</span>.char(byte))
+<span class="keyword">end</span>)
+</pre>
+
+<p> Here's a more elaborate example showing how to implement a screen of
+ 32x32 pixels at address 0x200:</p>
+
+
+<pre>
+<span class="keyword">local</span> SCREEN_ADDR = <span class="number">0x200</span>
+
+<span class="comment">--
+</span><span class="comment">-- Implement the screen.
+</span><span class="comment">--
+</span><span class="keyword">local</span> <span class="keyword">function</span> setup_screen(mpu)
+
+  <span class="keyword">local</span> <span class="keyword">function</span> write(mpu, addr, byte)
+
+    <span class="comment">-- Write the byte to actual memory (although we don't *have* to).
+</span>    <span class="comment">-- Note the 'true' 3'rd parameter: if we omit it, we'll end up
+</span>    <span class="comment">-- calling ourselves recursively.
+</span>    mpu:poke(addr, byte, <span class="keyword">true</span>)
+
+    <span class="keyword">local</span> x = (addr - SCREEN_ADDR) % <span class="number">32</span>
+    <span class="keyword">local</span> y = <span class="global">math</span>.floor( (addr - SCREEN_ADDR) / <span class="number">32</span> )
+
+    <span class="comment">-- Write a pixel at (x, y):
+</span>
+    draw_pixel(x, y, byte)  <span class="comment">-- You'll have to define this function, of course.
+</span>
+  <span class="keyword">end</span>
+
+  <span class="keyword">for</span> addr = SCREEN_ADDR, SCREEN_ADDR + <span class="number">32</span>*<span class="number">32</span> - <span class="number">1</span> <span class="keyword">do</span>
+    mpu:on_write(addr, write)
+  <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> mpu = <span class="global">require</span>(<span class="string">'M6502'</span>).new()
+
+setup_screen(mpu)
+
+<span class="comment">-- The following writes a pixel at coordinates (5, 0)
+</span>mpu:poke(<span class="number">0x205</span>, <span class="number">1</span>)
+</pre>
+
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter without-description ">addr</span>
+
+
+
+        </li>
+        <li><span class="parameter">fn</span>
+         The function to install. Or <strong>nil</strong> to clear any installed one.
+   The function gets three arguments: the <strong>mpu</strong> object, and the <strong>address</strong>
+   written to, and the <strong>byte</strong> written.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mpu:on_call"></a>
+    <strong>mpu:on_call(addr, fn)</strong>
+    </dt>
+    <dd>
+
+<p>Installs a callback to be used when an address is called. </p>
+
+<p> Example:</p>
+
+
+<pre>
+<span class="keyword">local</span> mpu = <span class="global">require</span>(<span class="string">'M6502'</span>).new()
+<span class="keyword">local</span> hex = <span class="global">require</span>(<span class="string">'M6502.utils'</span>).parse_hex
+
+<span class="comment">-- Install at 0xFFEE a "putchar" routine that prints
+</span><span class="comment">-- the character contained in register A.
+</span>mpu:on_call(<span class="number">0xFFEE</span>, <span class="keyword">function</span>(mpu)
+  <span class="global">print</span>(<span class="global">string</span>.char( mpu:a() ))
+<span class="keyword">end</span>)
+
+<span class="comment">-- A program to print the letter "A".
+</span><span class="keyword">local</span> prog = hex <span class="string">[[
+  a9 41     ; LDA #65  (65 is ASCII for "A")
+  20 ee ff  ; JSR $ffee
+  00        ; BRK
+]]</span>
+
+mpu:pokes(<span class="number">0x600</span>, prog)
+mpu:pc(<span class="number">0x600</span>)
+mpu:run()
+</pre>
+
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter without-description ">addr</span>
+
+
+
+        </li>
+        <li><span class="parameter">fn</span>
+         The function to install. Or <strong>nil</strong> to clear any installed one.
+   The function gets two arguments: the <strong>mpu</strong> object, and the <strong>address</strong>
+   called (it also get a third --currently undocumented-- argument: the
+   type of the call (JSR, JMP, BRK)). <strong>If</strong> the function returns a number,
+   it will be assigned to the PC register (that is, it's where execution
+   will resume), but you don't need to bother returning anything if
+   you're just implementing a JSR target (as in the example above).
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Misc"></a>Misc </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "mpu:dis"></a>
+    <strong>mpu:dis(addr)</strong>
+    </dt>
+    <dd>
+    Disassembles one machine instruction. </p>
+
+<p> Example:</p>
+
+
+<pre>
+<span class="keyword">local</span> text, ins_size = mpu:dis(<span class="number">0x603</span>)
+<span class="global">print</span>(text)
+
+<span class="comment">-- Print the next instruction.
+</span><span class="keyword">local</span> text = mpu:dis(<span class="number">0x603</span> + ins_size)
+<span class="global">print</span>(text)
+</pre>
+
+<p> See <a href="../modules/M6502.utils.html#dis_range">M6502.utils.dis_range</a> for an easier function to use.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">addr</span>
+         The instruction's address.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+        The mnemonic assembly code for the instruction.</li>
+        <li>
+         The length, in bytes, of the instruction and its operands (this
+   lets you advance to the next instruction).</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mpu:dump"></a>
+    <strong>mpu:dump()</strong>
+    </dt>
+    <dd>
+    Returns a string describing the MPU status. </p>
+
+<p> The values of the registers (and flags) is included.</p>
+
+<p> Example:</p>
+
+
+<pre>
+<span class="global">print</span>( mpu:dump() )
+</pre>
+
+<p> (If you want to dump a memory range, see <a href="../modules/M6502.utils.html#dump_range">M6502.utils.dump_range</a>.)
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mpu:run"></a>
+    <strong>mpu:run()</strong>
+    </dt>
+    <dd>
+    Makes the MPU start executing instructions. </p>
+
+<p> See <a href="../modules/M6502.html#mpu:PC">PC</a>.</p>
+
+<p> The MPU runs till a BRK (<code>0x00</code>) instructions is reached. By default the
+ handler for this instruction terminates the program after printing the
+ <a href="../modules/M6502.html#mpu:dump">MPU status</a>.
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2016-08-31 15:14:08 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

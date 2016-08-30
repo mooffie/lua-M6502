@@ -1,0 +1,8 @@
+--no-space-after-function-call-names
+--format-first-column-comments
+--indent-level4
+--brace-indent0
+--line-length100
+--no-tabs
+--blank-lines-after-procedures
+--leave-preprocessor-space

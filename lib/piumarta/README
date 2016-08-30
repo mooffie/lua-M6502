@@ -1,0 +1,10 @@
+Ian Piumarta's 6502 emulator library.
+
+The source code here is only two files plucked out of the full distro.
+To see the whole library, and its documentation, visit:
+
+    http://piumarta.com/software
+
+The original files are in the 'original' folder. These files have been
+modified slightly to make them suitable for use in this Lua project (run
+'diff' to see the modifications).
